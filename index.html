@@ -24,7 +24,7 @@
                 staticPath: 'FileAPI/dist/', 
                 cors: true 
             };
-            var socket = io("http://doraemon.iis.sinica.edu.tw/", {path: "/vssocketio/socket.io/"});
+            var socket = io("https://doraemon.iis.sinica.edu.tw/", {path: "/vssocketio/socket.io/"});
 
             //socket.binaryType = "arraybuffer";  
             socket.on('connect', function(){
