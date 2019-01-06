@@ -91,14 +91,16 @@
             <div id="default_images"></div>
             <div id="buttons">
                 <button onclick="add_from_device();">add from your device</button>
+                <input id="input_file" type="file" hidden>
                 <button onclick="use_these_images();">use these images!</button>
             </div>
          </div>
          <div id="camera_div" style="display:none;">
-            <video id="camera_stream" width="300" height="300" autoplay></video>
+            <video id="camera_stream" width="300" height="300" autoplay playsinline></video>
 	        <canvas id="camera_result" style="display:none;" width="300" height="300"></canvas>
             <div id="buttons">
-                <input class="camera_button" type="button" disabled="true" value="Five Up"></input>
+                <input class="camera_button" type="button" disabled="true" value="Give Up"></input>
+                <input class="camera_button" type="button" disabled="true" value="Flip"></input>
                 <input class="camera_button" id="camera_take_picture" type="button" disabled="true" value="Take Picture"></input>
             </div>
          </div>

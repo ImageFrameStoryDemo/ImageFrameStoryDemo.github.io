@@ -6,6 +6,45 @@ function add(){
     document.getElementById("default_images_and_add").removeAttribute('hidden');
     put_image_pool()
 }
+function imageToDataUri(img, width, height) {
+
+    // create an off-screen canvas
+    var canvas = document.createElement('canvas'),
+        ctx = canvas.getContext('2d');
+
+    // set its dimension to target size
+    canvas.width = width;
+    canvas.height = height;
+
+    // draw source image into the off-screen canvas:
+    ctx.drawImage(img, 0, 0, width, height);
+
+    // encode image to data-uri with base64 version of compressed image
+    return canvas.toDataURL("image/jpeg");
+}
+function b64toBlob(b64Data, contentType, sliceSize) {
+            contentType = contentType || '';
+            sliceSize = sliceSize || 512;
+
+            var byteCharacters = atob(b64Data);
+            var byteArrays = [];
+
+            for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+                            var slice = byteCharacters.slice(offset, offset + sliceSize);
+
+                            var byteNumbers = new Array(slice.length);
+                            for (var i = 0; i < slice.length; i++) {
+                                                byteNumbers[i] = slice.charCodeAt(i);
+                                            }
+
+                            var byteArray = new Uint8Array(byteNumbers);
+
+                            byteArrays.push(byteArray);
+                        }
+
+          var blob = new Blob(byteArrays, {type: contentType});
+          return blob;
+}
 
 function submit(){
     //console.log('click submit');
@@ -33,13 +72,24 @@ function submit(){
     }
     for (let index=0; index < childs.length; index ++) {
         child = childs[index];
-        //console.log('child', child);
+        console.log('child', child);
         if (child.id.startsWith("default")) {
             var img = document.getElementById(child.id);
             arr.push(child.src);
         }
         else {
-            arr.push(files[child.id]);
+			var ImageURL = child.src;
+			// Split the base64 string in data and contentType
+			var block = ImageURL.split(";");
+			// Get the content type of the image
+			var contentType = block[0].split(":")[1];// In this case "image/gif"
+			// get the real base64 content of the file
+			var realData = block[1].split(",")[1];// In this case "R0lGODlhPQBEAPeoAJosM...."
+
+			// Convert it to a blob to upload
+			var blob = b64toBlob(realData, contentType);
+			arr.push(blob);
+
         }
     }
     //console.log(arr)
@@ -52,36 +102,126 @@ function submit(){
     
     
 }
+files = {}
+var choose = document.getElementById('input_file');
+FileAPI.event.on(choose, 'change', function (evt){
+    console.log('event on choose!');
+    tmp_files = FileAPI.getFiles(evt); // Retrieve file list
+    console.log(tmp_files);
+
+    FileAPI.filterFiles(
+        tmp_files, 
+        function (file, info/**Object*/){
+            if( /^image/.test(file.type) ){
+                return  true;
+            }
+            return  false;
+        }, 
+        function (tmp_files/**Array*/, rejected/**Array*/){
+            // Make preview size x size;
+            
+            FileAPI.each(tmp_files, function (file){
+                //files.push(file);
+                console.log(files);
+                var size = (document.getElementById("default_images").clientWidth) / 3.5;
+                if (size > 178) {
+                    size = 178;
+                }
+                console.log('size', size);
+                console.log(file);
+                FileAPI.Image(file).resize(size, size, 'max').get(function (err, canvas){
+                    
+                    console.log('err', err);
+                        
+                    var imgsrc = canvas.toDataURL("image/jpeg");
+                    var img = document.createElement("img");
+                    img.src = imgsrc;
+                    index = Object.keys(files).length;
+                    img.id = String(index);
+                    files[String(index)] = file;
+                    
+                    var default_images = document.getElementById("default_images");
+                    img.className += 'un_select_image';
+                    img.onclick = function(e){
+                        if (this.classList.contains('un_select_image')){
+                            this.classList.remove('un_select_image');
+                            this.classList.add('selected_image');
+                        }else if(this.classList.contains('selected_image')){
+                            this.classList.remove('selected_image');
+                            this.classList.add('un_select_image');
+                        }
+                    }
+                    default_images.prepend(img);
+                });
+            });
+            document.getElementById("input_file").value = "";
+            
+        }
+    );
+});
 
 function add_from_device(){
+    var input_file = document.getElementById("input_file");
+    input_file.click();
+    
+    /*
+    if (!navigator.mediaDevices) {
+        alert ("Media device not supported. If you are on an iphone, please consider IOS 11 or above and using Safari.");
+    }
     $("#camera_div").css("display", "flex");
     $("#default_images_and_add").css("display", "none");
     // use MediaDevices API
     // docs: https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
     var video = document.getElementById("camera_stream");
-    console.log(video);
     var button = document.getElementById("camera_take_picture");
     button.disabled = false;
-    navigator.mediaDevices.getUserMedia({video: true})
+    var canvas = document.getElementById("camera_result");
+    video.style.display = 'initial';
+    canvas.style.display = 'none';
+    var canvasWidth = video.offsetWidth, canvasHeight = video.offsetHeight;
+    console.log('width', canvasWidth, 'height', canvasHeight);
+
+    navigator.mediaDevices.getUserMedia({video: {width: 640, facingMode: "environment"}, })
         // permission granted:
         .then(function(stream) {
             video.srcObject = stream;
+            video.play();
             button.onclick = function() {
-                var canvas = document.getElementById("camera_result");
-                var width = canvas.offsetWidth, height = canvas.offsetHeight;
 
                 var context = canvas.getContext('2d');
-                context.drawImage(video, 0, 0, width, height);
+                context.drawImage(video, 0, 0, canvasWidth, canvasHeight);
                 video.style.display = 'none';
-
+                canvas.style.display = 'initial';
+                var imgsrc = canvas.toDataURL("image/jpeg");
+                var img = document.createElement("img");
+                img.src = imgsrc;
+                var track = stream.getTracks()[0];
+                track.stop();
+                var default_images = document.getElementById("default_images");
+                $("#camera_div").css("display", "none");
+                $("#default_images_and_add").css("display", "initial");
+                var size = (document.getElementById("default_images").clientWidth) / 3.5;
+                img.width = size; 
+                img.height = size; 
+                img.className += 'un_select_image';
+                img.onclick = function(e){
+                    if (this.classList.contains('un_select_image')){
+                        this.classList.remove('un_select_image');
+                        this.classList.add('selected_image');
+                    }else if(this.classList.contains('selected_image')){
+                        this.classList.remove('selected_image');
+                        this.classList.add('un_select_image');
+                    }
+                }
+                default_images.prepend(img);
 
             }
-            window.alert('here2');
         })
         // permission denied:
         .catch(function(error) {
-            document.body.textContent = 'Could not access the camera. Error: ' + error.name + error.toString();
+            console.log('Could not access the camera. Error: ' + error.name + error.toString());
         });
+        */
 }
 function use_these_images(){
     var images = document.getElementById("default_images").childNodes;

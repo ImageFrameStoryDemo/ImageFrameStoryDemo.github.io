@@ -177,6 +177,9 @@ body {
 #default_images > img {
     margin-top: 2.5%;
 }
+#default_images > canvas {
+    margin-top: 2.5%;
+}
 
 .img_button {
     width: 75%;
