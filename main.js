@@ -105,6 +105,7 @@ function sign_in() {
 
 }
 
+/*
 $("#send_name").on('click', function (){
     var user_name = document.getElementById("user_name").value;
     if (user_name === ""){
@@ -119,7 +120,9 @@ $("#send_name").on('click', function (){
     }
     
 })
+*/
 
+/*
 const user_name_input = document.getElementById("user_name");
 user_name_input.addEventListener("keyup", function(event) {
     console.log("in key up event is", event);
@@ -139,6 +142,7 @@ user_name_input.addEventListener("keyup", function(event) {
 
     }
 });
+*/
 
 function put_image_pool(){
     default_image = document.getElementById("default_images_content");
@@ -165,7 +169,7 @@ $("document").ready(function(){
     while (images.firstChild) {
         images.removeChild(images.firstChild);
     }
-    name = sign_in()
+    //name = sign_in()
     put_image_pool()
     
 });

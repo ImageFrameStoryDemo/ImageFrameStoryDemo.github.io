@@ -86,6 +86,34 @@ body {
     
 }
 
+#camera_div {
+    padding: 2.5%;
+    width: 90%;
+    height: 90%;
+    border: 0.1vw solid #1d3557;
+    position: absolute;
+    z-index: 15;
+    top: 5%;
+    left: 5%;
+    display: flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+}
+#camera_stream {
+    height: 80vw;
+    width: 80vw; 
+    margin: 0 auto;
+    border: 0.1vw solid #1d3557;
+}
+#camera_result {
+    height: 80vw;
+    width: 80vw; 
+    border: 0.1vw solid #1d3557;
+}
+.camera_button{
+    width: 40%;
+}
 #default_images_and_add {
     padding: 2.5%;
     width: 90%;

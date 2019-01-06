@@ -43,8 +43,8 @@ button {
     display: grid;
     grid-template-columns: 20vw 20vw 20vw 30vw;
     grid-template-rows: auto;
-    grid-template-areas: "img_area img_area img_area logo"
-                         "img_area img_area img_area description"
+    grid-template-areas: "img_area img_area img_area description"
+                         "img_area img_area img_area tmp_area"
                          "sep_story sep_story sep_story tmp_area"
                          "sep_story sep_story sep_story tmp_area"
                          "usedFrameList usedFrameList usedFrameList usualFrameList";
@@ -137,7 +137,6 @@ button {
   border: 0.1vw solid #1d3557;
   background-color: white;
   grid-area: tmp_area;
-  height: 25vh;
   display: inline-flex;
   flex-direction: row;
   justify-content:space-around;

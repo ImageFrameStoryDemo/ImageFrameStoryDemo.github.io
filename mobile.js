@@ -1,7 +1,7 @@
 // below is image part
 function add(){
-    $("#input_images").css('opacity', 0.25);
-    $("#button_area").css('opacity', 0.25);
+    $("#input_images").css('opacity', 0.0);
+    $("#button_area").css('opacity', 0.0);
 
     document.getElementById("default_images_and_add").removeAttribute('hidden');
     put_image_pool()
@@ -54,7 +54,34 @@ function submit(){
 }
 
 function add_from_device(){
-    alert('The implementation of this function is postpone due to the SSL issue.')
+    $("#camera_div").css("display", "flex");
+    $("#default_images_and_add").css("display", "none");
+    // use MediaDevices API
+    // docs: https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
+    var video = document.getElementById("camera_stream");
+    console.log(video);
+    var button = document.getElementById("camera_take_picture");
+    button.disabled = false;
+    navigator.mediaDevices.getUserMedia({video: true})
+        // permission granted:
+        .then(function(stream) {
+            video.srcObject = stream;
+            button.onclick = function() {
+                var canvas = document.getElementById("camera_result");
+                var width = canvas.offsetWidth, height = canvas.offsetHeight;
+
+                var context = canvas.getContext('2d');
+                context.drawImage(video, 0, 0, width, height);
+                video.style.display = 'none';
+
+
+            }
+            window.alert('here2');
+        })
+        // permission denied:
+        .catch(function(error) {
+            document.body.textContent = 'Could not access the camera. Error: ' + error.name + error.toString();
+        });
 }
 function use_these_images(){
     var images = document.getElementById("default_images").childNodes;

@@ -3,6 +3,10 @@
         <title>VS DEMO</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+        <script
+          src="https://code.jquery.com/jquery-1.12.4.min.js"
+          integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+          crossorigin="anonymous"></script>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <link rel="stylesheet" href="starability/starability-css/starability-all.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.6/css/swiper.min.css">
@@ -88,6 +92,14 @@
             <div id="buttons">
                 <button onclick="add_from_device();">add from your device</button>
                 <button onclick="use_these_images();">use these images!</button>
+            </div>
+         </div>
+         <div id="camera_div" style="display:none;">
+            <video id="camera_stream" width="300" height="300" autoplay></video>
+	        <canvas id="camera_result" style="display:none;" width="300" height="300"></canvas>
+            <div id="buttons">
+                <input class="camera_button" type="button" disabled="true" value="Five Up"></input>
+                <input class="camera_button" id="camera_take_picture" type="button" disabled="true" value="Take Picture"></input>
             </div>
          </div>
          
