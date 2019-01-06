@@ -129,13 +129,15 @@ FileAPI.event.on(choose, 'change', function (evt){
                 }
                 console.log('size', size);
                 console.log(file);
-                FileAPI.Image(file).resize(size, size, 'max').get(function (err, canvas){
+                FileAPI.Image(file).resize(256, 256, 'max').get(function (err, canvas){
                     
                     console.log('err', err);
                         
                     var imgsrc = canvas.toDataURL("image/jpeg");
                     var img = document.createElement("img");
                     img.src = imgsrc;
+                    img.width = size;
+                    img.height = size;
                     index = Object.keys(files).length;
                     img.id = String(index);
                     files[String(index)] = file;
