@@ -423,7 +423,8 @@ function put_terms(height){
         //div.style.width = height;
         div.style.height = height;
         div.classList.add('showing_terms');
-        for (single_term of single_terms){
+        for (let j=0; j<single_terms.length; j++){
+            single_term = single_terms[j];
             single_term = single_term.cloneNode(true);
             div.appendChild(single_term);
         }
