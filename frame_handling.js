@@ -103,6 +103,9 @@ function color_frame(frame) {
     else {
         li.className += " frame_type";
     }
+    if (new_frame.length > 10){
+        li.className += " small_font_terms";
+    }
     li.appendChild(document.createTextNode(String(new_frame)));
     
     return li;

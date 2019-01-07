@@ -17,8 +17,7 @@ li {
    margin: 1em auto;
    width: 9vw;
    height: 5.5vh;
-   padding-right: auto;
-   padding-left: auto;
+   line-height: 3.7vh;
 }
 canvas {
   margin: 1vh 0.5vh;
@@ -133,6 +132,10 @@ button {
   font-size: 60%;
 }
 
+.small_font_terms {
+    font-size: 75%;
+}
+
 .tmp_area {
   border: 0.1vw solid #1d3557;
   background-color: white;
@@ -194,12 +197,12 @@ button {
 }
 
 .noun_type {
-  border: 0.1em solid #1D3557;
+  border: 0.1vw solid #1D3557;
   background-color: #A8DADC;
 }
 
 .frame_type {
-  border: 0.1em solid #1D3557;
+  border: 0.1vw solid #1D3557;
   background-color: #fdf295;
 }
 
